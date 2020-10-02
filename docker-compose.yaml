@@ -55,7 +55,7 @@ services:
     command:
       - '--auth'
       - '-f'
-      - '/etc/mongo.conf'
+      - '/etc/mongod.conf'
     ports:
       - '27017:27017'
     environment:
