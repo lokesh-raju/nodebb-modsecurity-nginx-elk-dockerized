@@ -50,12 +50,19 @@ services:
       - '4567:4567' # use a reverse proxy nginx
   # mongo database which is used by nodbb application
   db:
-    image: mongo:bionic
+    image: mongo
     restart: unless-stopped
+    command:
+      - '--auth'
+      - '-f'
+      - '/etc/mongo.conf'
     ports:
       - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: rampack
       MONGO_INITDB_ROOT_PASSWORD: nodebbinitialpwd
+    volumes:
+      - './mongodb/conf/mongod.conf:/etc/mongod.conf:rw'
+      - './mongodb/data:/data/db'
 volumes:
   logs:
