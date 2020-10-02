@@ -63,6 +63,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: nodebbinitialpwd
     volumes:
       - './mongodb/conf/mongod.conf:/etc/mongod.conf:rw'
-      - './mongodb/data:/data/db'
+      - './mongodb/data/db:/data/db'
 volumes:
   logs:
