@@ -48,7 +48,8 @@ services:
       - db
     ports:
       - '4567:4567' # use a reverse proxy nginx
-  # mongo database which is used by nodbb application
+    volumes:
+      - './nodebb_application/data:/usr/src/app'
   db:
     image: mongo
     restart: unless-stopped
