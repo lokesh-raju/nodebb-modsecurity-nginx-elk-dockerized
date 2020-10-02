@@ -1,6 +1,7 @@
 version: '3.5'
 
 services:
+  # reverse proxy nginx enabled with modsecurity
   modsecurity:
     build: mod_sec_nginx/
     restart: unless-stopped
@@ -18,6 +19,7 @@ services:
       - logstash
       - filebeat
       - nodebb
+  # log stash to capture logs and push it to elastic search
   logstash:
     build: logstash/
     restart: unless-stopped
@@ -25,11 +27,11 @@ services:
       - '5000:5000/tcp'
       - '5000:5000/udp'
       - '5044:5044'
-    command: '--cloud.id i-o-optimized-deployment:ZWFzdHVzMi5henVyZS5lbGFzdGljLWNsb3VkLmNvbTo5MjQzJDFkZDc3NDBhYWQ4MjQyMTZhMWEyMmY0YTk4OTViNjVkJDZmYzM1Y2NlN2U4ODQ5MjFiOGFlZmRhNjQ3MjIwMmE5 --cloud.auth elastic:IBFtb4h6e8myJwqrlgzvMdLI'
     volumes:
       - './logstash/pipeline/logstash.conf:/etc/logstash/conf.d/logstash.conf:ro'
       - './logstash/conf/logstash.yaml:/usr/share/logstash/config/logstash.yml'
       - './logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
+  # filebeat to capture modsecurity audit logs and push it to log stash
   filebeat:
     build: filebeat/
     restart: unless-stopped
@@ -38,6 +40,7 @@ services:
     volumes:
       - './filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro'
       - './mod_sec_log:/var/log:rw'
+  # nodebb is a cms application which is used as an example to show how modsecurity is working
   nodebb:
     build: nodebb_application/
     restart: unless-stopped
@@ -45,6 +48,7 @@ services:
       - db
     ports:
       - '4567:4567' # use a reverse proxy nginx
+  # mongo database which is used by nodbb application
   db:
     image: mongo:bionic
     restart: unless-stopped
