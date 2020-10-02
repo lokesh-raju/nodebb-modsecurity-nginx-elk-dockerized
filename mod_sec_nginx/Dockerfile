@@ -22,7 +22,7 @@ RUN apt-get update && \
     mv crs-setup.conf.example crs-setup.conf && \
     ln -sv /opt/owasp-modsecurity-crs-3.2 /etc/modsecurity.d/owasp-crs && \
     printf "include /etc/modsecurity.d/owasp-crs/crs-setup.conf\ninclude /etc/modsecurity.d/owasp-crs/rules/*.conf" >> /etc/modsecurity.d/include.conf && \
-    sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine On/g' /etc/modsecurity.d/modsecurity.conf && \
+    sed -i -e 's/SecRuleEngine DetectionOnly/SecRuleEngine DetectionOnly/g' /etc/modsecurity.d/modsecurity.conf && \
     sed -i -e 's#SecAuditLog /var/log/modsec_audit.log#SecAuditLog /var/log/modsec/modsec_audit.log#' /etc/modsecurity.d/modsecurity.conf && \
     printf "SecAuditLogFormat JSON" >> /etc/modsecurity.d/modsecurity.conf
 
