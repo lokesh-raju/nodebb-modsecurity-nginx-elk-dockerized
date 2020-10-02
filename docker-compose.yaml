@@ -1,0 +1,57 @@
+version: '3.5'
+
+services:
+  modsecurity:
+    build: mod_sec_nginx/
+    restart: unless-stopped
+    ports:
+      - '80:80' # use a reverse proxy
+    volumes:
+      - './mod_sec_log:/var/log/modsec'
+    logging:
+      driver: syslog
+      options:
+        syslog-address: 'tcp://:5000'
+        syslog-facility: 'daemon'
+        mode: 'non-blocking'
+    depends_on:
+      - logstash
+      - filebeat
+      - nodebb
+  logstash:
+    build: logstash/
+    restart: unless-stopped
+    ports:
+      - '5000:5000/tcp'
+      - '5000:5000/udp'
+      - '5044:5044'
+    command: '--cloud.id i-o-optimized-deployment:ZWFzdHVzMi5henVyZS5lbGFzdGljLWNsb3VkLmNvbTo5MjQzJDFkZDc3NDBhYWQ4MjQyMTZhMWEyMmY0YTk4OTViNjVkJDZmYzM1Y2NlN2U4ODQ5MjFiOGFlZmRhNjQ3MjIwMmE5 --cloud.auth elastic:IBFtb4h6e8myJwqrlgzvMdLI'
+    volumes:
+      - './logstash/pipeline/logstash.conf:/etc/logstash/conf.d/logstash.conf:ro'
+      - './logstash/conf/logstash.yaml:/usr/share/logstash/config/logstash.yml'
+      - './logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
+  filebeat:
+    build: filebeat/
+    restart: unless-stopped
+    depends_on:
+      - logstash
+    volumes:
+      - './filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro'
+      - './mod_sec_log:/var/log:rw'
+  nodebb:
+    build: nodebb_application/
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - '4567:4567' # use a reverse proxy nginx
+  db:
+    image: mongo:bionic
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rampack
+      MONGO_INITDB_ROOT_PASSWORD: nodebbinitialpwd
+volumes:
+  logs:
