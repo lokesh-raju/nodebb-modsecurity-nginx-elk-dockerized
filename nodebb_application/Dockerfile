@@ -6,17 +6,18 @@ WORKDIR /usr/src/app
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 # Adding arguments which are usefull for further steps
-ARG COMMIT=master
-ARG BRANCH=master
+#ARG COMMIT=v1.14.3
+ARG BRANCH=v1.14.3
 ARG REPO=NodeBB/NodeBB
 
 RUN apt-get update && \
     apt-get -y install git && \
-    git init && \
-    git remote add origin https://github.com/${REPO} && \
-    git fetch --depth 1 origin ${BRANCH} && \
-    git checkout ${COMMIT} && \
-    cp /usr/src/app/install/package.json /usr/src/app/package.json
+    git clone https://github.com/${REPO} --branch=${BRANCH}&& \
+    cp /usr/src/app/NodeBB/install/package.json /usr/src/app/package.json
+
+RUN cp -a /usr/src/app/NodeBB/. /usr/src/app/
+
+COPY conf/config.json.template /usr/src/app/config.json.template
 
 RUN npm install --only=prod && \
     npm cache clean --force

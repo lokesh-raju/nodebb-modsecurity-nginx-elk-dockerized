@@ -1,0 +1,1 @@
+!function(n){"object"==typeof module&&module.exports?module.exports=n():"function"==typeof define&&define.amd&&define(n)}(function(){function n(n,e,a,t,i){n.__escape;return'<div id="taskbar" class="taskbar navbar-fixed-bottom">\n\t<div class="navbar-inner"><ul class="nav navbar-nav pull-right"></ul></div>\n</div>'}return n.blocks={},n});

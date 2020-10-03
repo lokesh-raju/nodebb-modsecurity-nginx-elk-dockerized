@@ -1,0 +1,1 @@
+!function(e){"object"==typeof module&&module.exports?module.exports=e():"function"==typeof define&&define.amd&&define(e)}(function(){function e(e,n,o,t,l){e.__escape;return'<label>Amount of Tags to display:</label>\r\n<input type="text" class="form-control" name="numTags" placeholder="8" />\r\n'}return e.blocks={},e});

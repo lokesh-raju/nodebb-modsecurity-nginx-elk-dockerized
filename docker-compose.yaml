@@ -28,7 +28,6 @@ services:
       - '5000:5000/udp'
       - '5044:5044'
     volumes:
-      - './logstash/pipeline/logstash.conf:/etc/logstash/conf.d/logstash.conf:ro'
       - './logstash/conf/logstash.yaml:/usr/share/logstash/config/logstash.yml'
       - './logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
   # filebeat to capture modsecurity audit logs and push it to log stash
@@ -49,10 +48,8 @@ services:
     ports:
       - '4567:4567' # use a reverse proxy nginx
     volumes:
-      - './nodebb_application/data:/var/lib/nodebb'
-      - /usr/src/nodebb/build
-      - /usr/src/nodebb/node_modules
-      - /usr/src/nodebb/public/uploads
+      - './nodebb_application/app:/usr/src/app/build'
+      - './nodebb_application/data:/usr/src/app/public/uploads'
   db:
     image: mongo
     restart: unless-stopped

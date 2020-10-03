@@ -1,0 +1,1 @@
+!function(e){"object"==typeof module&&module.exports?module.exports=e():"function"==typeof define&&define.amd&&define(e)}(function(){function e(e,n,o,t,f){e.__escape;return""}return e.blocks={},e});

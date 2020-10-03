@@ -1,0 +1,2 @@
+"use strict";define("sort",["components"],function(t){var a={};a.handleSort=function(a,r,o){var e=t.get("thread/sort");e.find("i").removeClass("fa-check");var n=e.find('a[data-sort="'+config[a]+'"]');n.find("i").addClass("fa-check");$(".category, .topic").on("click",'[component="thread/sort"] a',function(){var t=$(this).attr("data-sort");socket.emit(r,t,function(r){if(r){return app.alertError(r.message)}config[a]=t;var e=decodeURIComponent($.param(utils.params()));ajaxify.go(o+(e?"?"+e:""))})})};return a});
+//# sourceMappingURL=sort.js.map
