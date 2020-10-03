@@ -1,2 +1,0 @@
-"use strict";define("admin/settings/sounds",["sounds","settings","admin/settings"],function(n,t,i){var e={};e.init=function(){$(".sounds").find('button[data-action="play"]').on("click",function(t){t.preventDefault();var i=$(this).parent().parent().find("select").val();n.playSound(i)});i.prepare()};return e});
-//# sourceMappingURL=sounds.js.map
